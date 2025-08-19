@@ -20,22 +20,22 @@ def resolve_name(a)
 end
 
 def row_to_s(row, src_t, dest_t, location)
-  '%4.4s %8.8s %8.8s %32.32s:%-8.8s %32.32s:%-8.8s    %s' % [ row[0], row[1], row[2], resolve_name(src_t[0]), src_t[1], resolve_name(dest_t[0]), dest_t[1], location ]
+  '%4.4s %8.8s %8.8s %32.32s:%-8.8s %32.32s:%-8.8s    %s' % [ row[0], row[1], row[2], resolve_name(src_t[0]), src_t[1], resolve_name(dest_t[0]), dest_t[1], location ] # rubocop:disable Style/FormatStringToken
 end
 
 o = `netstat -an` # Netstat command to run
 
 o.split("\n").each do |l|
-  tokens = l.squeeze(' ').split(' ')
+  tokens = l.squeeze(' ').split(' ') # rubocop:disable Style/RedundantArgument
   next unless tokens[5] == 'ESTABLISHED'
 
   src_t = tokens[3].split(':')
   dest_t = tokens[4].split(':')
   if src_t.length == 1
     src_t = tokens[3].split('.')
-    src_t = [ "#{src_t[0]}.#{src_t[1]}.#{src_t[2]}.#{src_t[3]}", src_t[4]]
+    src_t = [ "#{src_t[0]}.#{src_t[1]}.#{src_t[2]}.#{src_t[3]}", src_t[4] ]
     dest_t = tokens[4].split('.')
-    dest_t = [ "#{dest_t[0]}.#{dest_t[1]}.#{dest_t[2]}.#{dest_t[3]}", dest_t[4]]
+    dest_t = [ "#{dest_t[0]}.#{dest_t[1]}.#{dest_t[2]}.#{dest_t[3]}", dest_t[4] ]
   end
   #     if tokens[0] =~ /^udp.*/
   #       src = Addrinfo.udp(*src_t).getnameinfo.join(':')
